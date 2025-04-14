@@ -56,11 +56,10 @@ def extrair_dados_pedido(pedido: Dict[str, Any]) -> Optional[Tuple]:
         franqueado = pedido['franqueado']['nome']
         fornecedor = pedido['fornecedor']['nome']
         data_pedido = datetime.strptime(pedido['dataCriacao'], '%Y-%m-%dT%H:%M:%S.%fZ')
-        data_pedido_formatado = data_pedido.strftime('%d%m%Y')
         mes_pedido = MESES[data_pedido.month - 1]
         valor_pedido = sum(item['quantidadeProdutos'] * item['valorUnitario'] for item in pedido['itensPedido'])
 
-        return (numero_pedido, status, franqueado, fornecedor, data_pedido_formatado, mes_pedido, valor_pedido)
+        return (numero_pedido, status, franqueado, fornecedor, data_pedido, mes_pedido, valor_pedido)
 
     except KeyError as e:
         logging.warning(f'Campo ausente ao processar pedido: {e}')
@@ -120,7 +119,7 @@ def processar_pedidos() -> None:
     """
     url = 'https://app.centraldofranqueado.com.br/api/v2/pedidos/'
     headers = {'x-api-key': os.getenv('API_KEY')}
-    params = {'periodo': '2025-04-06'}
+    params = {'periodo': '2025-04-07'}
 
     retry_strategy = Retry(
         total=3,
