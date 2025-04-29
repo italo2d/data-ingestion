@@ -5,10 +5,19 @@ from dotenv import load_dotenv
 def processa_chamados():
     load_dotenv()
 
-    url = 'https://app.centraldofranqueado.com.br/api/v2/pedidos/'
+    url = os.getenv('API_URL')
     headers = {'x-api-key': os.getenv('API_KEY')}
     params = {'status': 'opened',
               }
+    
+    ## Caso falhe a requisição
+   
+    try:
+        response = requests.get(url, headers=headers, params=params)
+        response.raise_for_status()
+    except requests.exceptions.RequestException as e:
+        print(f"Erro ao acessar a API: {e}")
+        return None
 
     response = requests.get(url, headers=headers, params=params)
     
@@ -19,4 +28,9 @@ def processa_chamados():
     return response.json()
 
 chamados = processa_chamados()
-print(chamados)
+
+if chamados:
+    print(chamados)
+    
+else:
+    print("Não foi possível obter os chamados.")
