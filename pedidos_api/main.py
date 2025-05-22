@@ -1,4 +1,4 @@
-from processador import processar_pedidos
+from processador import processar_periodo_2024
 import logging
 
 logging.basicConfig(
@@ -7,4 +7,4 @@ logging.basicConfig(
 )
 
 if __name__ == '__main__':
-    processar_pedidos()
+    processar_periodo_2024()
